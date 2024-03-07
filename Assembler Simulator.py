@@ -295,6 +295,13 @@ def ExecuteBEQ(Registers, Address):
     Registers[PC] = Address
   return Registers
 
+def ExecuteBNE(Registers, Address):
+  StatusRegister = ConvertToBinary(Registers[STATUS])
+  FlagZ = StatusRegister[0]
+  if FlagZ != '0':
+    Registers[PC] = Address
+  return Registers
+
 def ExecuteJMP(Registers, Address): 
   Registers[PC] = Address
   return Registers
