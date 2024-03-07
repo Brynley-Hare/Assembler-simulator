@@ -124,7 +124,7 @@ def ExtractLabel(Instruction, LineNumber, Memory, SymbolTable):
 
 def ExtractOpCode(Instruction, LineNumber, Memory):
   if len(Instruction) > 9:
-    OpCodeValues = ["LDA", "STA", "LDA#", "HLT", "ADD", "JMP", "SUB", "CMP#", "BEQ", "SKP", "JSR", "RTN", "BNE", "BGT", "   "]
+    OpCodeValues = ["LDA", "STA", "LDA#", "HLT", "ADD", "JMP", "SUB", "CMP#", "BEQ", "SKP", "JSR", "RTN", "BNE", "BGT", "BLT", "   "]
     Operation = Instruction[7:10]
     if len(Instruction) > 10:
       AddressMode = Instruction[10:11]
@@ -305,6 +305,12 @@ def ExecuteBGT(Registers, Address):
   if StatusRegister == '000':
     Registers[PC] = Address
   return Registers
+
+def ExecuteBLT(Registers, Address):
+  StatusRegister = ConvertToBinary(Registers[STATUS])
+  if StatusRegister == '010':
+    Registers[PC] = Address
+  return Registers
   
 def ExecuteJMP(Registers, Address): 
   Registers[PC] = Address
@@ -376,6 +382,8 @@ def Execute(SourceCode, Memory):
       Registers = ExecuteBNE(Registers, Operand)
     elif OpCode == "BGT":
       Registers = ExecuteBGT(Registers, Operand)
+    elif OpCode == 'BLT':
+      Registers = ExecuteBLT(Registers, Operand)
     if Registers[ERR] == 0:
       OpCode = Memory[Registers[PC]].OpCode    
       DisplayCurrentState(SourceCode, Memory, Registers)

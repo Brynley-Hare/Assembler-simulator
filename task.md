@@ -3,7 +3,7 @@
 ### 2. Add new opcodes
     1. BNE - done  
     2. BGT - done  
-    3. BLT  
+    3. BLT - done  
     4. AND  
     5. OR  
     6. NOT  
