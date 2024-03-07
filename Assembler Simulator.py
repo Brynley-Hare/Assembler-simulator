@@ -372,6 +372,10 @@ def Execute(SourceCode, Memory):
       ExecuteSKP()
     elif OpCode == "RTN":
       Registers = ExecuteRTN(Memory, Registers)
+    elif OpCode == "BNE":
+      Registers = ExecuteBNE(Registers, Operand)
+    elif OpCode == "BGT":
+      Registers = ExecuteBGT(Registers, Operand)
     if Registers[ERR] == 0:
       OpCode = Memory[Registers[PC]].OpCode    
       DisplayCurrentState(SourceCode, Memory, Registers)
