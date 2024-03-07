@@ -83,8 +83,13 @@ def LoadFile(SourceCode):
     DisplaySourceCode(SourceCode)
   return SourceCode
 
-def EditSourceCode(SourceCode): 
-  LineNumber = int(input("Enter line number of code to edit: "))
+def EditSourceCode(SourceCode):
+  while True:
+    try:
+      LineNumber = int(input("Enter line number of code to edit: "))
+      break
+    except ValueError:
+      print('Invalid input... Please enter integer.')
   print(SourceCode[LineNumber])
   Choice = EMPTY_STRING
   while Choice != "C":
