@@ -290,18 +290,22 @@ def ExecuteCMPimm(Registers, Operand):
 
 def ExecuteBEQ(Registers, Address):
   StatusRegister = ConvertToBinary(Registers[STATUS])
-  FlagZ = StatusRegister[0]
-  if FlagZ == "1":
+  if StatusRegister == "100":
     Registers[PC] = Address
   return Registers
 
 def ExecuteBNE(Registers, Address):
   StatusRegister = ConvertToBinary(Registers[STATUS])
-  FlagZ = StatusRegister[0]
-  if FlagZ != '0':
+  if StatusRegister != '100':
     Registers[PC] = Address
   return Registers
 
+def ExecuteBGT(Registers, Address):
+  StatusRegister = ConvertToBinary(Registers[STATUS])
+  if StatusRegister == '000':
+    Registers[PC] = Address
+  return Registers
+  
 def ExecuteJMP(Registers, Address): 
   Registers[PC] = Address
   return Registers
