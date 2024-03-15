@@ -124,7 +124,7 @@ def ExtractLabel(Instruction, LineNumber, Memory, SymbolTable):
 
 def ExtractOpCode(Instruction, LineNumber, Memory):
   if len(Instruction) > 9:
-    OpCodeValues = ["LDA", "STA", "LDA#", "HLT", "ADD", "JMP", "SUB", "CMP#", "BEQ", "SKP", "JSR", "RTN", "BNE", "BGT", "BLT", "   "]
+    OpCodeValues = ["LDA", "STA", "LDA#", "HLT", "ADD", "JMP", "SUB", "CMP#", "BEQ", "SKP", "JSR", "RTN", "BNE", "BGT", "BLT","AND" ,"AND# ", "   "]
     Operation = Instruction[7:10]
     if len(Instruction) > 10:
       AddressMode = Instruction[10:11]
@@ -311,6 +311,16 @@ def ExecuteBLT(Registers, Address):
   if StatusRegister == '010':
     Registers[PC] = Address
   return Registers
+
+def ExecuteAND(Memory, Registers, Address):
+  Registers[ACC] = Registers[ACC] & Memory[Address].OperandValue
+  Registers = SetFlags(Registers[ACC], Registers)
+  return Registers
+
+def ExecuteANDimm(Registers, Operand):
+  Registers[ACC] = Registers[ACC] & Operand
+  Registers = SetFlags(Registers[ACC], Registers)
+  return Registers
   
 def ExecuteJMP(Registers, Address): 
   Registers[PC] = Address
@@ -384,6 +394,10 @@ def Execute(SourceCode, Memory):
       Registers = ExecuteBGT(Registers, Operand)
     elif OpCode == 'BLT':
       Registers = ExecuteBLT(Registers, Operand)
+    elif OpCode == 'AND':
+      Registers = ExecuteAND(Memory, Registers, Operand)
+    elif OpCode == 'AND#':
+      Registers = ExecuteANDimm(Registers, Operand)
     if Registers[ERR] == 0:
       OpCode = Memory[Registers[PC]].OpCode    
       DisplayCurrentState(SourceCode, Memory, Registers)

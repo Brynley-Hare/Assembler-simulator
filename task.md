@@ -4,7 +4,7 @@
     1. BNE - done  
     2. BGT - done  
     3. BLT - done  
-    4. AND  
+    4. AND - done  
     5. OR  
     6. NOT  
     7. SHR  
