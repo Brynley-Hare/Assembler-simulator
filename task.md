@@ -7,10 +7,10 @@
     4. AND - done  
     5. OR - done  
     6. NOT - done  
-    7. SHR  
-    8. SHL  
-    9. LSR  
-    10. LSL  
+    7. SHR - done  
+    8. SHL - done  
+    9. LSR - don't need  
+    10. LSL - don't need  
     11. EOR  
 ### 3. Save edited textfile as new one  
 ### 4. Edit line, double check if entry is an integer and also exist within the amount of lines in that program.  
