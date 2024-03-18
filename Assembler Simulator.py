@@ -124,7 +124,7 @@ def ExtractLabel(Instruction, LineNumber, Memory, SymbolTable):
 
 def ExtractOpCode(Instruction, LineNumber, Memory):
   if len(Instruction) > 9:
-    OpCodeValues = ["LDA", "STA", "LDA#", "HLT", "ADD", "JMP", "SUB", "CMP#", "BEQ", "SKP", "JSR", "RTN", "BNE", "BGT", "BLT","AND" ,"AND#" ,"OR" ,"OR#" ,"   "]
+    OpCodeValues = ["LDA", "STA", "LDA#", "HLT", "ADD", "JMP", "SUB", "CMP#", "BEQ", "SKP", "JSR", "RTN", "BNE", "BGT", "BLT","AND" ,"AND#" ,"OR" ,"OR#" ,"NOT" ,"   "]
     Operation = Instruction[7:10]
     if len(Instruction) > 10:
       AddressMode = Instruction[10:11]
@@ -332,6 +332,10 @@ def ExecuteORimm(Registers, Operand):
   Registers = SetFlags(Registers[ACC], Registers)
   return Registers
 
+def ExecuteNOT(Registers):
+  Registers[ACC] = ~Registers[ACC]
+  return Registers
+
 def ExecuteJMP(Registers, Address): 
   Registers[PC] = Address
   return Registers
@@ -412,6 +416,8 @@ def Execute(SourceCode, Memory):
       Registers = ExecuteOR(Memory, Registers, Operand)
     elif OpCode == 'OR#':
       Registers = ExecuteORimm(Registers, Operand)
+    elif OpCode == 'NOT':
+      Registers = ExecuteNOT(Registers)
     if Registers[ERR] == 0:
       OpCode = Memory[Registers[PC]].OpCode    
       DisplayCurrentState(SourceCode, Memory, Registers)

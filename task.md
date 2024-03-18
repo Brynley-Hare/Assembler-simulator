@@ -6,7 +6,7 @@
     3. BLT - done  
     4. AND - done  
     5. OR - done  
-    6. NOT  
+    6. NOT - done  
     7. SHR  
     8. SHL  
     9. LSR  
