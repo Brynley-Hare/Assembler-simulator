@@ -125,7 +125,7 @@ def ExtractLabel(Instruction, LineNumber, Memory, SymbolTable):
 def ExtractOpCode(Instruction, LineNumber, Memory):
   if len(Instruction) > 9:
     OpCodeValues = ["LDA", "STA", "LDA#", "HLT", "ADD", "JMP", "SUB", "CMP#", "BEQ", "SKP", "JSR", "RTN", "BNE", "BGT",
-                    "BLT","AND" ,"AND#" ,"OR" ,"OR#" ,"NOT" ,"SHR" ,"SHL" ,"   "]
+                    "BLT","AND" ,"AND#" ,"OR" ,"OR#" ,"NOT" ,"SHR" ,"SHL" ,"EOR" ,"EOR#" ,"   "]
     Operation = Instruction[7:10]
     if len(Instruction) > 10:
       AddressMode = Instruction[10:11]
@@ -345,6 +345,16 @@ def ExecuteSHL(Registers):
   Registers[ACC] = Registers[ACC] << 1
   return Registers
 
+def ExecuteEOR(Memory, Registers, Address):
+  Registers[ACC] = Registers[ACC] ^ Memory[Address].OperandValue
+  Registers = SetFlags(Registers[ACC], Registers)
+  return Registers
+
+def ExecuteEORimm(Registers, Operand):
+  Registers[ACC] = Registers[ACC] ^ Operand
+  Registers = SetFlags(Registers[ACC], Registers)
+  return Registers
+
 def ExecuteJMP(Registers, Address): 
   Registers[PC] = Address
   return Registers
@@ -431,6 +441,10 @@ def Execute(SourceCode, Memory):
       Registers = ExecuteSHR(Registers)
     elif OpCode == 'SHL':
       Registers = ExecuteSHL(Registers)
+    elif OpCode == 'EOR':
+      Registers = ExecuteEOR(Registers)
+    elif OpCode == 'EOR#':
+      Registers = ExecuteEORimm(Registers)
     if Registers[ERR] == 0:
       OpCode = Memory[Registers[PC]].OpCode    
       DisplayCurrentState(SourceCode, Memory, Registers)
