@@ -30,6 +30,7 @@ def DisplayMenu():
   print("E - Edit source code")
   print("A - Assemble program")
   print("R - Run the program")
+  print("S - Save a program file")
   print("X - Exit simulator") 
   print()
 
@@ -82,6 +83,15 @@ def LoadFile(SourceCode):
   if LineNumber > 0:
     DisplaySourceCode(SourceCode)
   return SourceCode
+
+def SaveFile(SourceCode):
+  FileName = input("Enter filename to save: ")
+  try:
+    with open(FileName + ".txt", "w") as f:
+      for i in SourceCode[1:]:
+        f.write(i+'\n')
+  except Exception as e:
+    print(e)
 
 def EditSourceCode(SourceCode):
   while True:
@@ -489,7 +499,12 @@ def AssemblerSimulator():
       elif Memory[0].OpCode == "ERR":  
         print("Error Code 11")
       else:
-        Execute(SourceCode, Memory) 
+        Execute(SourceCode, Memory)
+    elif MenuOption == 'S':
+      if SourceCode[0] == EMPTY_STRING:
+        print("Error code 12")
+      else:
+        SaveFile(SourceCode)
     elif MenuOption == 'X':
       Finished = True
     else:
